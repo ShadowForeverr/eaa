@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord Messages</title>
+  <style>
+    #messages {
+      list-style-type: none;
+      padding: 0;
+    }
+    .message {
+      background-color: #f0f0f0;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Messages from Discord Channel</h1>
+  <ul id="messages"></ul>
+
+  <script>
+    // Fetch messages from your backend API
+    function fetchMessages() {
+      fetch('http://localhost:3000/api/messages')  // The endpoint to your backend server
+        .then(response => response.json())
+        .then(data => {
+          const messagesContainer = document.getElementById('messages');
+          messagesContainer.innerHTML = '';
+
+          data.forEach(message => {
+            const li = document.createElement('li');
+            li.classList.add('message');
+            li.textContent = `${message.author.username}: ${message.content}`;
+            messagesContainer.appendChild(li);
+          });
+        })
+        .catch(err => console.error('Error fetching messages:', err));
+    }
+
+    // Load messages when the page is loaded
+    window.onload = fetchMessages;
+  </script>
+</body>
+</html>
